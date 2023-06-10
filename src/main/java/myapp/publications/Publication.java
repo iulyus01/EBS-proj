@@ -1,4 +1,4 @@
-package publish;
+package myapp.publications;
 
 import java.io.Serializable;
 import java.util.*;

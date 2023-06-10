@@ -1,3 +1,5 @@
+package myapp.bolts;
+
 import java.util.Map;
 
 import org.apache.storm.task.OutputCollector;
@@ -6,9 +8,9 @@ import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.topology.base.BaseRichBolt;
 import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
-import publish.Publication;
+import myapp.publications.Publication;
 
-public class PrintBolt extends BaseRichBolt {
+public class StationIdBolt extends BaseRichBolt {
 
     private OutputCollector collector;
 
@@ -18,14 +20,12 @@ public class PrintBolt extends BaseRichBolt {
     }
 
     public void execute(Tuple input) {
+//        Publication publication = (Publication) input.getValueByField("publication");
 
-        Publication publication = (Publication) input.getValueByField("publication");
-
-        System.out.println("=============================================================================" + publication.getCity());
+//        System.out.print("-");
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-
         declarer.declare(new Fields("word"));
     }
 

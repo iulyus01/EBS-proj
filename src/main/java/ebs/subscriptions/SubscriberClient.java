@@ -31,12 +31,17 @@ public class SubscriberClient extends Thread implements Receivable{
     @Override
     public void pushed(Publication... publications) {
 
-        System.out.println("Subscriber " + clientId + " has received " + publications.length + " publications.");
+        System.out.println("Client " + clientId + " has received " + publications.length + " publications.");
         Arrays.stream(publications).sequential().forEach(System.out::println);
     }
 
     @Override
     public String getClientId() {
         return clientId;
+    }
+
+    public void setSubscriptionManager(Pushable manager) {
+
+        this.manager = manager;
     }
 }

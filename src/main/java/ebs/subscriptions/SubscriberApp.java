@@ -16,6 +16,10 @@ public class SubscriberApp {
             SubscriptionManager subscriptionManager = new SubscriptionManager();
             subscriptionManager.addClients(subscriberClient1, subscriberClient2, subscriberClient3);
 
+            subscriberClient1.setSubscriptionManager(subscriptionManager);
+            subscriberClient2.setSubscriptionManager(subscriptionManager);
+            subscriberClient3.setSubscriptionManager(subscriptionManager);
+
             subscriptionManager.startServer();
 
             subscriberClient1.start();

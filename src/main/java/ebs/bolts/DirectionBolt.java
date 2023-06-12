@@ -14,6 +14,7 @@ import org.apache.storm.tuple.Tuple;
 import ebs.publications.Publication;
 import org.apache.storm.tuple.Values;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,13 +22,15 @@ public class DirectionBolt extends BaseRichBolt {
 
     private OutputCollector collector;
     private MatchCheckerFactory factory;
-    private Map<UUID, Pair<Operator, String>> subscriptionsMap;
+    private Map<UUID, Pair<Operator, String>> subscriptionsMap = new HashMap<>();
 
     public void prepare(Map<String, Object> stormConf, TopologyContext context, OutputCollector collector) {
 
         this.collector = collector;
+        factory = MatchCheckerFactory.getInstance();
     }
 
+    @SuppressWarnings("unchecked")
     public void execute(Tuple input) {
 
         String type = input.getStringByField("type");
@@ -41,16 +44,14 @@ public class DirectionBolt extends BaseRichBolt {
             }
 
             System.out.println("Direction bolt handled publication");
-            System.out.println(publication);
         }
         else {
-            Subscription subscription = (Subscription) input.getValueByField("data");
-            handleSubscription(subscription);
+            Pair<String, Subscription> subscriptionPair = (Pair<String, Subscription>) input.getValueByField("data");
+            handleSubscription(subscriptionPair.second);
 
-            this.collector.emit(new Values("subscription", subscription));
+            this.collector.emit(new Values("subscription", subscriptionPair));
 
             System.out.println("Direction bolt handled subscription");
-            System.out.println(subscription);
         }
 
     }
@@ -75,6 +76,9 @@ public class DirectionBolt extends BaseRichBolt {
                 else {
                     publication.removeMatchingSubscription(key);
                 }
+            } else {
+
+                publication.addMatchingSubscription(key);
             }
         }
     }

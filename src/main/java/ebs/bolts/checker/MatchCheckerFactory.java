@@ -2,10 +2,11 @@ package ebs.bolts.checker;
 
 import ebs.common.Operator;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MatchCheckerFactory {
+public class MatchCheckerFactory implements Serializable {
 
     private static MatchCheckerFactory factory;
     private static final Map<Operator, MatchChecker> checkersMap = new HashMap<>();

@@ -3,6 +3,7 @@ package ebs.subscriptions;
 import ebs.common.Utils;
 import ebs.common.Operator;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -21,8 +22,8 @@ public class SubscriptionGenerator {
         simpleIntOperators = Arrays.asList(Operator.EQUAL, Operator.NOT_EQUAL, Operator.GREATER, Operator.LOWER,
                 Operator.GREATER_EQUAL, Operator.LOWER_EQUAL);
 
-        allIntOperators = Arrays.asList(Operator.EQUAL_AVERAGE, Operator.GREATER_AVERAGE, Operator.GREATER_EQUAL_AVERAGE,
-                Operator.NOT_EQUAL_AVERAGE, Operator.LOWER_EQUAL_AVERAGE, Operator.LOWER_AVERAGE);
+        allIntOperators = new ArrayList<>(Arrays.asList(Operator.EQUAL_AVERAGE, Operator.GREATER_AVERAGE, Operator.GREATER_EQUAL_AVERAGE,
+                Operator.NOT_EQUAL_AVERAGE, Operator.LOWER_EQUAL_AVERAGE, Operator.LOWER_AVERAGE));
         allIntOperators.addAll(simpleIntOperators);
 
         stringOperators = Arrays.asList(Operator.EQUAL, Operator.NOT_EQUAL);

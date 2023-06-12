@@ -14,14 +14,15 @@ import org.apache.storm.tuple.Tuple;
 import ebs.publications.Publication;
 import org.apache.storm.tuple.Values;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
 public class CityBolt extends BaseRichBolt {
 
     private OutputCollector collector;
-    private MatchCheckerFactory factory;
-    private Map<UUID, Pair<Operator, String>> subscriptionsMap;
+    private MatchCheckerFactory factory = MatchCheckerFactory.getInstance();
+    private Map<UUID, Pair<Operator, String>> subscriptionsMap = new HashMap<>();
 
     public void prepare(Map<String, Object> stormConf, TopologyContext context, OutputCollector collector) {
 
@@ -30,20 +31,26 @@ public class CityBolt extends BaseRichBolt {
 
     public void execute(Tuple input) {
 
-        try {
-            Publication publication = (Publication) input.getValueByField("publication");
+        String type = input.getStringByField("type");
+        if(type.compareTo("publication") == 0) {
+            Publication publication = (Publication) input.getValueByField("data");
+
             handlePublication(publication);
 
             if (publication.existsMatchingSubscriptions()) {
                 this.collector.emit(new Values("publication", publication));
             }
-        } catch (Exception exception) {
-            Subscription subscription = (Subscription) input.getValueByField("subscription");
-            handleSubscription(subscription);
 
-            this.collector.emit(new Values("subscription", subscription));
+            System.out.println("Direction bolt handled publication");
         }
+        else {
+            Pair<String, Subscription> subscriptionPair = (Pair<String, Subscription>) input.getValueByField("data");
+            handleSubscription(subscriptionPair.second);
 
+            this.collector.emit(new Values("subscription", subscriptionPair));
+
+            System.out.println("Direction bolt handled subscription");
+        }
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {

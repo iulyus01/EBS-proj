@@ -1,5 +1,6 @@
 package ebs.spouts;
 
+import ebs.common.Pair;
 import ebs.common.Utils;
 import ebs.subscriptions.Subscription;
 import org.apache.storm.spout.SpoutOutputCollector;
@@ -27,7 +28,7 @@ public class SubscriptionSpout extends BaseRichSpout {
 
         try {
             InetAddress host = InetAddress.getLocalHost();
-            socket = new Socket(host.getHostName(), Utils.SUBSCRIPTIONS_MANAGER_PORT);
+            socket = new Socket(host.getHostName(), Utils.SUBSCRIPTIONS_SPOUT_PORT);
             ois = new ObjectInputStream(socket.getInputStream());
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -38,15 +39,15 @@ public class SubscriptionSpout extends BaseRichSpout {
 
         try {
 
-            Subscription subscription = (Subscription) ois.readObject();
-            this.collector.emit(new Values(subscription));
+            Pair<String, Subscription> subscriptionPair = (Pair<String, Subscription>) ois.readObject();
+            this.collector.emit(new Values("subscriptionPair", subscriptionPair));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-        declarer.declare(new Fields("subscription"));
+        declarer.declare(new Fields("type", "data"));
     }
 
     @Override

@@ -24,6 +24,7 @@ public class PublicationSpout extends BaseRichSpout {
     public void open(Map<String, Object> config, TopologyContext context, SpoutOutputCollector collector) {
         this.collector = collector;
 
+        System.out.println("########################################################################################");
         try {
             InetAddress host = InetAddress.getLocalHost();
             socket = new Socket(host.getHostName(), Utils.PUBLISHER_PORT);
@@ -36,14 +37,14 @@ public class PublicationSpout extends BaseRichSpout {
     public void nextTuple() {
         try {
             Publication publication = (Publication) ois.readObject();
-            this.collector.emit(new Values(publication));
+            this.collector.emit(new Values("publication", publication));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-        declarer.declare(new Fields("publication"));
+        declarer.declare(new Fields("type", "data"));
     }
 
     @Override

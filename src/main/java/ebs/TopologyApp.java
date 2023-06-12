@@ -17,6 +17,7 @@ public class TopologyApp {
     private static final String STATION_BOLT_ID = "STATION_BOLT_ID";
     private static final String TEMPERATURE_BOLT_ID = "TEMPERATURE_BOLT_ID";
     private static final String WIND_BOLT_ID = "WIND_BOLT_ID";
+    private static final String META_PUBLICATION_BOLT = "META_PUBLICATION_BOLT";
     private static final String TERMINAL_BOLT_ID = "TERMINAL_BOLT_ID";
 
     public static void main( String[] args ) throws Exception {
@@ -28,12 +29,14 @@ public class TopologyApp {
         DirectionBolt directionBolt = new DirectionBolt();
         StationIdBolt stationIdBolt = new StationIdBolt();
         TemperatureBolt temperatureBolt = new TemperatureBolt();
+        MetaSubscriptionBolt MetaSubscriptionBolt = new MetaSubscriptionBolt();
         WindBolt windBolt = new WindBolt();
         TerminalBolt terminalBolt = new TerminalBolt();
 
         builder.setSpout(PUBLISHER_SPOUT_ID, pubSpout);
         builder.setSpout(SUBSCRIBER_SPOUT_ID, subSpout);
-        builder.setBolt(CITY_BOLT_ID, cityBolt).shuffleGrouping(PUBLISHER_SPOUT_ID).shuffleGrouping(SUBSCRIBER_SPOUT_ID);
+        builder.setBolt(META_PUBLICATION_BOLT, MetaSubscriptionBolt).shuffleGrouping(PUBLISHER_SPOUT_ID).shuffleGrouping(SUBSCRIBER_SPOUT_ID);
+        builder.setBolt(CITY_BOLT_ID, cityBolt).shuffleGrouping(META_PUBLICATION_BOLT);
         builder.setBolt(DIRECTION_BOLT_ID, directionBolt).shuffleGrouping(CITY_BOLT_ID);
         builder.setBolt(STATION_BOLT_ID, stationIdBolt).shuffleGrouping(DIRECTION_BOLT_ID);
         builder.setBolt(TEMPERATURE_BOLT_ID, temperatureBolt).shuffleGrouping(STATION_BOLT_ID);

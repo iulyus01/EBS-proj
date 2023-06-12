@@ -35,7 +35,9 @@ public class CityBolt extends BaseRichBolt {
         if(type.compareTo("publication") == 0) {
             Publication publication = (Publication) input.getValueByField("data");
 
-            handlePublication(publication);
+            if(!publication.isMetaPublication()) {
+                handlePublication(publication);
+            }
 
             this.collector.emit(new Values("publication", publication));
 

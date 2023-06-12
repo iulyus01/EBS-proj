@@ -74,11 +74,13 @@ public class TerminalBolt extends BaseRichBolt {
                  publication.getMatchingSubscriptionsCity().contains(key) &&
                 publication.getMatchingSubscriptionsTemperature().contains(key);
 
+                boolean toSendMeta = publication.isMetaPublication() && publication.getMatchingSubscriptions().contains(key);
+
                 // send subscription to client
                 try {
 
-                    if(toSend) {
-                        System.out.println("[Terminal bolt] Is about to send publication!");
+                    if(toSend || toSendMeta) {
+                        System.out.println("[Terminal bolt] Is about to send " + (toSendMeta? "meta" : "") + " publication!");
                         ous.writeObject(new Pair<>(mapSubscriptionsToClientId.get(key), publication));
                         ous.flush();
                     }

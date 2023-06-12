@@ -23,13 +23,21 @@ public class PublicationManager {
 
         System.out.println("Publisher server connected");
 
-        while(true) {
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < Utils.NO_OF_PUBLICATIONS; i++) {
             try {
                 oos.writeObject(generator.generatePublication());
+                oos.flush();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
                 break;
             }
+
         }
 
         socket.close();

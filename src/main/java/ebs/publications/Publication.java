@@ -6,12 +6,20 @@ import java.util.*;
 public class Publication implements Serializable {
 
     private final Map<String, Object> publicationData;
-    private final Set<UUID> matchingSubscriptions;
+    private final Set<UUID> matchingSubscriptionsCity;
+    private final Set<UUID> matchingSubscriptionsDirection;
+    private final Set<UUID> matchingSubscriptionsStationId;
+    private final Set<UUID> matchingSubscriptionsTemperature;
+    private final Set<UUID> matchingSubscriptionsWind;
 
     public Publication(int stationId, String city, int temperature, int wind, String direction) {
 
         publicationData = new HashMap<>();
-        matchingSubscriptions = new HashSet<>();
+        matchingSubscriptionsCity = new HashSet<>();
+        matchingSubscriptionsDirection = new HashSet<>();
+        matchingSubscriptionsStationId = new HashSet<>();
+        matchingSubscriptionsTemperature = new HashSet<>();
+        matchingSubscriptionsWind = new HashSet<>();
 
         publicationData.put("stationId", stationId);
         publicationData.put("city", city);
@@ -20,14 +28,31 @@ public class Publication implements Serializable {
         publicationData.put("direction", direction);
     }
 
-    public void addMatchingSubscription(UUID subscriptionUUID) {
+    public void addMatchingSubscriptionCity(UUID subscriptionUUID) {
 
-        matchingSubscriptions.add(subscriptionUUID);
+        matchingSubscriptionsCity.add(subscriptionUUID);
     }
 
-    public void removeMatchingSubscription(UUID subscriptionUUID) {
+    public void addMatchingSubscriptionDirection(UUID subscriptionUUID) {
 
-        matchingSubscriptions.remove(subscriptionUUID);
+        matchingSubscriptionsDirection.add(subscriptionUUID);
+    }
+
+
+    public void addMatchingSubscriptionStationId(UUID subscriptionUUID) {
+
+        matchingSubscriptionsStationId.add(subscriptionUUID);
+    }
+
+    public void addMatchingSubscriptionTemp(UUID subscriptionUUID) {
+
+        matchingSubscriptionsTemperature.add(subscriptionUUID);
+    }
+
+
+    public void addMatchingSubscriptionWind(UUID subscriptionUUID) {
+
+        matchingSubscriptionsWind.add(subscriptionUUID);
     }
 
     public int getStationId() {
@@ -50,13 +75,24 @@ public class Publication implements Serializable {
         return (String) publicationData.get("direction");
     }
 
-    public Set<UUID> getMatchingSubscriptions() {
-        return matchingSubscriptions;
+    public Set<UUID> getMatchingSubscriptionsCity() {
+        return matchingSubscriptionsCity;
     }
 
-    public boolean existsMatchingSubscriptions() {
+    public Set<UUID> getMatchingSubscriptionsDirection() {
+        return matchingSubscriptionsDirection;
+    }
 
-        return matchingSubscriptions.isEmpty();
+    public Set<UUID> getMatchingSubscriptionsStationId() {
+        return matchingSubscriptionsStationId;
+    }
+
+    public Set<UUID> getMatchingSubscriptionsTemperature() {
+        return matchingSubscriptionsTemperature;
+    }
+
+    public Set<UUID> getMatchingSubscriptionsWind() {
+        return matchingSubscriptionsWind;
     }
 
     @Override

@@ -65,18 +65,27 @@ public class TerminalBolt extends BaseRichBolt {
 
     public void handlePublication(Publication publication) {
 
-        for(UUID key: publication.getMatchingSubscriptions()) {
 
-            String clientId = mapSubscriptionsToClientId.getOrDefault(key, null);
+            for (UUID key : mapSubscriptionsToClientId.keySet()) {
 
-            // send subscription to client
-            try {
-                System.out.println("[Terminal bolt] Is about to send publication!");
-                ous.writeObject(new Pair<>(clientId, publication));
-            } catch (Exception e) {
-                e.printStackTrace();
+                boolean toSend = publication.getMatchingSubscriptionsStationId().contains(key) &&
+                 publication.getMatchingSubscriptionsDirection().contains(key) &&
+                 publication.getMatchingSubscriptionsWind().contains(key) &&
+                 publication.getMatchingSubscriptionsCity().contains(key) &&
+                publication.getMatchingSubscriptionsTemperature().contains(key);
+
+                // send subscription to client
+                try {
+
+                    if(toSend) {
+                        System.out.println("[Terminal bolt] Is about to send publication!");
+                        ous.writeObject(new Pair<>(mapSubscriptionsToClientId.get(key), publication));
+                        ous.flush();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }
     }
 
     public void handleSubscription(Pair<String, Subscription> subscriptionPair) {

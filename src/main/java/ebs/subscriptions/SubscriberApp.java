@@ -9,9 +9,9 @@ public class SubscriberApp {
         System.out.println("Subscriber Application started");
 
         try {
-            SubscriberClient subscriberClient1 = new SubscriberClient("Alex", true, 2500);
-            SubscriberClient subscriberClient2 = new SubscriberClient("Andrei", true, 4000);
-            SubscriberClient subscriberClient3 = new SubscriberClient("Denis", false, 3500);
+            SubscriberClient subscriberClient1 = new SubscriberClient("Alex", true, 25);
+            SubscriberClient subscriberClient2 = new SubscriberClient("Andrei", true, 40);
+            SubscriberClient subscriberClient3 = new SubscriberClient("Denis", true, 35);
 
             SubscriptionManager subscriptionManager = new SubscriptionManager();
             subscriptionManager.addClients(subscriberClient1, subscriberClient2, subscriberClient3);

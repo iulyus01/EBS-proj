@@ -24,6 +24,7 @@ public class SubscriberClient extends Thread implements Receivable{
 
         for (int i = 0; i < numberOfSubscriptions; i++) {
 
+//            System.out.println("Client sending subscription");
             manager.pushed(generator.generateSubscription(), clientId);
         }
     }

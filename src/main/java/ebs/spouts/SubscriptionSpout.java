@@ -42,7 +42,7 @@ public class SubscriptionSpout extends BaseRichSpout {
             Pair<String, Subscription> subscriptionPair = (Pair<String, Subscription>) ois.readObject();
             this.collector.emit(new Values("subscriptionPair", subscriptionPair));
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 

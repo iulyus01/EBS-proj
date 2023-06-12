@@ -37,11 +37,9 @@ public class CityBolt extends BaseRichBolt {
 
             handlePublication(publication);
 
-            if (publication.existsMatchingSubscriptions()) {
-                this.collector.emit(new Values("publication", publication));
-            }
+            this.collector.emit(new Values("publication", publication));
 
-            System.out.println("Direction bolt handled publication");
+            System.out.println("City bolt handled publication");
         }
         else {
             Pair<String, Subscription> subscriptionPair = (Pair<String, Subscription>) input.getValueByField("data");
@@ -49,7 +47,7 @@ public class CityBolt extends BaseRichBolt {
 
             this.collector.emit(new Values("subscription", subscriptionPair));
 
-            System.out.println("Direction bolt handled subscription");
+            System.out.println("City bolt handled subscription");
         }
     }
 
@@ -60,13 +58,18 @@ public class CityBolt extends BaseRichBolt {
 
     public void handlePublication(Publication publication) {
 
-        for(UUID key: subscriptionsMap.keySet()) {
+        for (UUID key : subscriptionsMap.keySet()) {
 
             Pair<Operator, String> subscription = subscriptionsMap.get(key);
-            MatchChecker checker = factory.getMatcher(subscription.first);
-            if(checker.checkOperation(publication.getCity(), subscription.second)) {
 
-                publication.addMatchingSubscription(key);
+            if (subscription != null) {
+                MatchChecker checker = factory.getMatcher(subscription.first);
+                if (checker.checkOperation(publication.getCity(), subscription.second)) {
+
+                    publication.addMatchingSubscriptionCity(key);
+                }
+            } else {
+                publication.addMatchingSubscriptionCity(key);
             }
         }
     }

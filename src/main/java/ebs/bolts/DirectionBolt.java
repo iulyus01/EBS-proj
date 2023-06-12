@@ -39,9 +39,7 @@ public class DirectionBolt extends BaseRichBolt {
 
             handlePublication(publication);
 
-            if (publication.existsMatchingSubscriptions()) {
-                this.collector.emit(new Values("publication", publication));
-            }
+            this.collector.emit(new Values("publication", publication));
 
             System.out.println("Direction bolt handled publication");
         }
@@ -63,22 +61,18 @@ public class DirectionBolt extends BaseRichBolt {
 
     public void handlePublication(Publication publication) {
 
-        for(UUID key: publication.getMatchingSubscriptions()) {
+        for (UUID key : subscriptionsMap.keySet()) {
 
-            Pair<Operator, String> subscription = subscriptionsMap.getOrDefault(key, null);
-            if(subscription != null) {
+            Pair<Operator, String> subscription = subscriptionsMap.get(key);
 
+            if (subscription != null) {
                 MatchChecker checker = factory.getMatcher(subscription.first);
-                if(checker.checkOperation(publication.getDirection(), subscription.second)) {
+                if (checker.checkOperation(publication.getDirection(), subscription.second)) {
 
-                    publication.addMatchingSubscription(key);
-                }
-                else {
-                    publication.removeMatchingSubscription(key);
+                    publication.addMatchingSubscriptionDirection(key);
                 }
             } else {
-
-                publication.addMatchingSubscription(key);
+                publication.addMatchingSubscriptionDirection(key);
             }
         }
     }

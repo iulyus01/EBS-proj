@@ -39,9 +39,7 @@ public class TemperatureBolt extends BaseRichBolt {
 
             handlePublication(publication);
 
-            if (publication.existsMatchingSubscriptions()) {
-                this.collector.emit(new Values("publication", publication));
-            }
+            this.collector.emit(new Values("publication", publication));
 
             System.out.println("Temperature bolt handled publication");
         }
@@ -63,22 +61,19 @@ public class TemperatureBolt extends BaseRichBolt {
 
     public void handlePublication(Publication publication) {
 
-        for(UUID key: publication.getMatchingSubscriptions()) {
 
-            Pair<Operator, Integer> subscription = subscriptionsMap.getOrDefault(key, null);
-            if(subscription != null) {
+        for (UUID key : subscriptionsMap.keySet()) {
 
+            Pair<Operator, Integer> subscription = subscriptionsMap.get(key);
+
+            if (subscription != null) {
                 MatchChecker checker = factory.getMatcher(subscription.first);
-                if(checker.checkOperation(publication.getDirection(), subscription.second)) {
+                if (checker.checkOperation(publication.getTemperature(), subscription.second)) {
 
-                    publication.addMatchingSubscription(key);
-                }
-                else {
-                    publication.removeMatchingSubscription(key);
+                    publication.addMatchingSubscriptionTemp(key);
                 }
             } else {
-
-                publication.addMatchingSubscription(key);
+                publication.addMatchingSubscriptionTemp(key);
             }
         }
     }

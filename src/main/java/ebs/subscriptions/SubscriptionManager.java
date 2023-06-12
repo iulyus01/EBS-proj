@@ -17,7 +17,6 @@ public class SubscriptionManager implements Pushable{
     private final ServerSocket subscriptionSpoutServer;
     private final ServerSocket terminalBoltServer;
     private ObjectOutputStream oos;
-    private ObjectInputStream ois;
     private ObjectInputStream terminalBoltOis;
     private Map<String, Receivable> clientsMap;
 
@@ -47,7 +46,7 @@ public class SubscriptionManager implements Pushable{
                     client.pushed(publicationPair.second);
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }).start();
     }
@@ -58,7 +57,6 @@ public class SubscriptionManager implements Pushable{
         System.out.println("Subscriber spout connected");
 
         oos = new ObjectOutputStream(socket.getOutputStream());
-        ois = new ObjectInputStream(socket.getInputStream());
     }
 
     public void addClients(Receivable ... clients) {
@@ -70,13 +68,14 @@ public class SubscriptionManager implements Pushable{
 
 
     @Override
-    public void pushed(Subscription subscription, String clientId) {
+    public synchronized void pushed(Subscription subscription, String clientId) {
 
         try {
 
             oos.writeObject(new Pair<>(clientId, subscription));
+            oos.flush();
 
-            System.out.println("Client " + clientId + " send subscription");
+//            System.out.println("Client " + clientId + " send subscription");
         } catch (IOException e) {
             e.printStackTrace();
         }

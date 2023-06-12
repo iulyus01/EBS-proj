@@ -1,14 +1,12 @@
 package ebs.common;
 
-import ebs.bolts.checker.*;
-
-import java.io.Serializable;
 import java.util.*;
 
 public class Utils {
 
     public static final Random random = new Random();
     public static final int NO_OF_PROPERTIES = 5;
+    public static final int NO_OF_PUBLICATIONS = 10;
     public static final int PUBLISHER_PORT = 8088;
     public static final int SUBSCRIPTIONS_SPOUT_PORT = 8089;
     public static final int TERMINAL_BOLT_PORT = 8090;

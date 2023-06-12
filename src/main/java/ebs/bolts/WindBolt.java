@@ -39,9 +39,7 @@ public class WindBolt extends BaseRichBolt {
 
             handlePublication(publication);
 
-            if (publication.existsMatchingSubscriptions()) {
-                this.collector.emit(new Values("publication", publication));
-            }
+            this.collector.emit(new Values("publication", publication));
 
             System.out.println("Wind bolt handled publication");
         }
@@ -63,22 +61,18 @@ public class WindBolt extends BaseRichBolt {
 
     public void handlePublication(Publication publication) {
 
-        for(UUID key: publication.getMatchingSubscriptions()) {
+        for (UUID key : subscriptionsMap.keySet()) {
 
-            Pair<Operator, Integer> subscription = subscriptionsMap.getOrDefault(key, null);
-            if(subscription != null) {
+            Pair<Operator, Integer> subscription = subscriptionsMap.get(key);
 
+            if (subscription != null) {
                 MatchChecker checker = factory.getMatcher(subscription.first);
-                if(checker.checkOperation(publication.getDirection(), subscription.second)) {
+                if (checker.checkOperation(publication.getWind(), subscription.second)) {
 
-                    publication.addMatchingSubscription(key);
-                }
-                else {
-                    publication.removeMatchingSubscription(key);
+                    publication.addMatchingSubscriptionWind(key);
                 }
             } else {
-
-                publication.addMatchingSubscription(key);
+                publication.addMatchingSubscriptionWind(key);
             }
         }
     }

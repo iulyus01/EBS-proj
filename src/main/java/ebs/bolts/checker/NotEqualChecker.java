@@ -9,7 +9,7 @@ public class NotEqualChecker implements MatchChecker {
             return ((String) pubVal).compareTo((String) subVal) != 0;
         }
         if(pubVal instanceof Integer) {
-            return pubVal == subVal;
+            return pubVal != subVal;
         }
         return false;
     }

@@ -19,10 +19,10 @@ public enum Operator implements Serializable{
     GREATER_EQUAL_AVERAGE,
     LOWER_EQUAL_AVERAGE;
 
-    public boolean isSimple(Operator operator) {
+    public boolean isSimple() {
 
         List<Operator> simpleOperators = Arrays.asList(EQUAL, NOT_EQUAL, GREATER, LOWER, GREATER_EQUAL, LOWER_EQUAL);
 
-        return simpleOperators.stream().filter(simpleOperator -> simpleOperator == operator).count() == 1;
+        return simpleOperators.stream().filter(simpleOperator -> simpleOperator == this).count() == 1;
     }
 }

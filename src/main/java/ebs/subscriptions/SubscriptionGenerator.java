@@ -24,7 +24,7 @@ public class SubscriptionGenerator {
 
         allIntOperators = new ArrayList<>(Arrays.asList(Operator.EQUAL_AVERAGE, Operator.GREATER_AVERAGE, Operator.GREATER_EQUAL_AVERAGE,
                 Operator.NOT_EQUAL_AVERAGE, Operator.LOWER_EQUAL_AVERAGE, Operator.LOWER_AVERAGE));
-        allIntOperators.addAll(simpleIntOperators);
+//        allIntOperators.addAll(simpleIntOperators);
 
         stringOperators = Arrays.asList(Operator.EQUAL, Operator.NOT_EQUAL);
     }

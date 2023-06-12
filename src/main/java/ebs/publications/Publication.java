@@ -11,6 +11,8 @@ public class Publication implements Serializable {
     private final Set<UUID> matchingSubscriptionsStationId;
     private final Set<UUID> matchingSubscriptionsTemperature;
     private final Set<UUID> matchingSubscriptionsWind;
+    private final Set<UUID> matchingSubscriptions;
+    private boolean isMetaPublication;
 
     public Publication(int stationId, String city, int temperature, int wind, String direction) {
 
@@ -20,6 +22,8 @@ public class Publication implements Serializable {
         matchingSubscriptionsStationId = new HashSet<>();
         matchingSubscriptionsTemperature = new HashSet<>();
         matchingSubscriptionsWind = new HashSet<>();
+        matchingSubscriptions = new HashSet<>();
+        isMetaPublication = false;
 
         publicationData.put("stationId", stationId);
         publicationData.put("city", city);
@@ -27,6 +31,12 @@ public class Publication implements Serializable {
         publicationData.put("wind", wind);
         publicationData.put("direction", direction);
     }
+
+    public void addMatchingSubscription(UUID subscriptionUUID) {
+
+        matchingSubscriptions.add(subscriptionUUID);
+    }
+
 
     public void addMatchingSubscriptionCity(UUID subscriptionUUID) {
 
@@ -95,10 +105,22 @@ public class Publication implements Serializable {
         return matchingSubscriptionsWind;
     }
 
+    public Set<UUID> getMatchingSubscriptions() {
+        return matchingSubscriptions;
+    }
+
+    public void setMetaPublication(boolean metaPublication) {
+        isMetaPublication = metaPublication;
+    }
+
+    public boolean isMetaPublication() {
+        return isMetaPublication;
+    }
+
     @Override
     public String toString() {
-
-        return "StationID" +
+        if(isMetaPublication) return "Meta publicatie";
+        else return "StationID" +
                 " = " + getStationId() + " # \n" +
                 "City" +
                 " = " + getCity() + " # \n" +

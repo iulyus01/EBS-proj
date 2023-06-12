@@ -43,7 +43,7 @@ public class WindBolt extends BaseRichBolt {
                 this.collector.emit(new Values("publication", publication));
             }
 
-            System.out.println("Direction bolt handled publication");
+            System.out.println("Wind bolt handled publication");
         }
         else {
             Pair<String, Subscription> subscriptionPair = (Pair<String, Subscription>) input.getValueByField("data");
@@ -51,7 +51,7 @@ public class WindBolt extends BaseRichBolt {
 
             this.collector.emit(new Values("subscription", subscriptionPair));
 
-            System.out.println("Direction bolt handled subscription");
+            System.out.println("Wind bolt handled subscription");
         }
 
     }

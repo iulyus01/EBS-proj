@@ -53,7 +53,7 @@ public class App {
         cluster.submitTopology("CrazyTopology", config, topology);
 
         try {
-            Thread.sleep(10000);
+            Thread.sleep(20000);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

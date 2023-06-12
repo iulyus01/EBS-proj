@@ -31,7 +31,7 @@ public class TerminalBolt extends BaseRichBolt {
 
         try {
             InetAddress host = InetAddress.getLocalHost();
-            socket = new Socket(host.getHostName(), Utils.PUBLISHER_PORT);
+            socket = new Socket(host.getHostName(), Utils.TERMINAL_BOLT_PORT);
             ous = new ObjectOutputStream(socket.getOutputStream());
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -71,6 +71,7 @@ public class TerminalBolt extends BaseRichBolt {
 
             // send subscription to client
             try {
+                System.out.println("[Terminal bolt] Is about to send publication!");
                 ous.writeObject(new Pair<>(clientId, publication));
             } catch (Exception e) {
                 e.printStackTrace();

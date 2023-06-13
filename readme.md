@@ -1,4 +1,7 @@
-EBS project
+![Schema]([https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true](https://github.com/iulyus01/EBS-proj/blob/master/schema.png))
+
+
+** EBS project
 
 Application ran for 3 min:
 
